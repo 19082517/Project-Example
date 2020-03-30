@@ -2,12 +2,16 @@ package sample;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -20,26 +24,39 @@ public class Main extends Application {
         primaryStage.setTitle(" ");
         primaryStage.show();
     }
+
     public Pane createRootPane() {
         GridPane pane = new GridPane();
-        pane.setHgap(10);
-        pane.setVgap(10);
+        pane.setMinSize(350, 150);
+        pane.setMaxSize(350, 150);
         pane.setPadding(new Insets(10));
 
-        TextField display = new TextField("");
-        pane.add(display, 0, 0, 3, 1);
-        String[] labels =
-                { "7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "CE" };
-        int r = 1;
-        int c = 0;
-        for (String label : labels)
-        {
-            Button b = new Button(label);
-            b.setMaxWidth(Double.MAX_VALUE);
-            pane.add(b, c, r);
-            c++;
-            if (c == 3) { c = 0; r++; }
-        }
+        TextField lbl1 = new TextField("");
+        TextField lbl2 = new TextField("");
+        Text display1 = new Text("getal1");
+        Text display2 = new Text("getal2");
+
+        Button btnP = new Button("+");
+        Button btnV = new Button("*");
+        Button btnD = new Button("/");
+        btnP.setMaxWidth(Double.MAX_VALUE);
+        btnV.setMaxWidth(Double.MAX_VALUE);
+        btnD.setMaxWidth(Double.MAX_VALUE);
+
+        display1.setStyle("-fx-font-weight: bold");
+        display2.setStyle("-fx-font-weight: bold");
+        //lbl1.alignmentProperty(Pos.CENTER_LEFT);
+        GridPane.setMargin(display1, new Insets(0, 150, 0, 0));
+        GridPane.setMargin(display2, new Insets(0, 150, 0, 0));
+
+        pane.add(display1, 0,0);
+        pane.add(display2, 0,1);
+        pane.add(lbl1, 1,0,3,1);
+        pane.add(lbl2, 1,1,3,2);
+        pane.add(btnP, 0, 3);
+        pane.add(btnV, 1, 3);
+        pane.add(btnD, 2, 3);
+
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(33.33);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -47,6 +64,8 @@ public class Main extends Application {
         ColumnConstraints col3 = new ColumnConstraints();
         col3.setPercentWidth(33.33);
         pane.getColumnConstraints().addAll(col1, col2, col3);
+
+
         return pane;
     }
 
