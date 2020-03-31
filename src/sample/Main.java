@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 public class Main extends Application {
 
@@ -67,11 +69,30 @@ public class Main extends Application {
         col3.setPercentWidth(33.33);
         pane.getColumnConstraints().addAll(col1, col2, col3);
 
+        btnP.setOnAction((ActionEvent event) -> {
+            int answer = Integer.parseInt(lbl1.getText()) + Integer.parseInt(lbl2.getText());
+           displayAns.setText("" + answer);
+        });
+        btnD.setOnAction((ActionEvent event) -> {
+            int answer = Integer.parseInt(lbl1.getText()) / Integer.parseInt(lbl2.getText());
+            displayAns.setText("" + answer);
+        });
+        btnV.setOnAction((ActionEvent event) -> {
+            int answer = Integer.parseInt(lbl1.getText()) * Integer.parseInt(lbl2.getText());
+            displayAns.setText("" + answer);
+        });
 
         return pane;
     }
+
 
     public static void main(String[] args) {
         launch(args);
     }
 }
+
+interface Berekening
+{
+    int bereken(int getal1, int getal2);
+}
+
