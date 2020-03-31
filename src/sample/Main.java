@@ -35,6 +35,7 @@ public class Main extends Application {
         TextField lbl2 = new TextField("");
         Text display1 = new Text("getal1");
         Text display2 = new Text("getal2");
+        Text displayAns = new Text("");
 
         Button btnP = new Button("+");
         Button btnV = new Button("*");
@@ -56,6 +57,7 @@ public class Main extends Application {
         pane.add(btnP, 0, 3);
         pane.add(btnV, 1, 3);
         pane.add(btnD, 2, 3);
+        pane.add(displayAns, 0, 5);
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(33.33);
