@@ -23,6 +23,8 @@ public class Main extends Application {
         primaryStage.setScene(scene1);
         primaryStage.setTitle(" ");
         primaryStage.show();
+
+
     }
 
     public Pane createRootPane() {
