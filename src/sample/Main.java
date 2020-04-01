@@ -18,35 +18,31 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private Button btnP = new Button("+");
+    private Button btnV = new Button("*");
+    private Button btnD = new Button("/");
+    private TextField field1 = new TextField("");
+    private TextField field2 = new TextField("");
+    private Text displayAns = new Text("");
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = createRootPane();
+        GridPane root = createRootPane();
         Scene scene1 = new Scene(root);
         primaryStage.setScene(scene1);
         primaryStage.setTitle(" ");
         primaryStage.show();
-
-
     }
 
-    public Pane createRootPane() {
+    public GridPane createRootPane() {
         GridPane pane = new GridPane();
         pane.setMinSize(350, 150);
         pane.setMaxSize(350, 150);
         pane.setPadding(new Insets(10));
 
-        TextField field1 = new TextField("");
-        TextField field2 = new TextField("");
-        Text displayAns = new Text("");
-
-        Button btnP = new Button("+");
-        Button btnV = new Button("*");
-        Button btnD = new Button("/");
-        btnP.setMaxWidth(Double.MAX_VALUE);
-        btnV.setMaxWidth(Double.MAX_VALUE);
-        btnD.setMaxWidth(Double.MAX_VALUE);
-
-        //lbl1.alignmentProperty(Pos.CENTER_LEFT);
+        setButtonSize(btnD);
+        setButtonSize(btnP);
+        setButtonSize(btnV);
 
         pane.add(new Text("getal1"), 0,0);
         pane.add(new Text("getal2"), 0,1);
@@ -57,27 +53,80 @@ public class Main extends Application {
         pane.add(btnD, 2, 3);
         pane.add(displayAns, 0, 5);
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(33.33);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(33.33);
-        ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(33.33);
+        ColumnConstraints col1 = createColumnConstraints();
+        ColumnConstraints col2 = createColumnConstraints();
+        ColumnConstraints col3 = createColumnConstraints();
         pane.getColumnConstraints().addAll(col1, col2, col3);
 
-        btnP.setOnAction((ActionEvent event) -> displayAns.setText("" + (getNumber1(field1) + getNumber2(field2))));
-        btnD.setOnAction((ActionEvent event) -> displayAns.setText("" + (getNumber1(field1) / getNumber2(field2))));
-        btnV.setOnAction((ActionEvent event) -> displayAns.setText("" + (getNumber1(field1) * getNumber2(field2))));
+        btnP.setOnAction((ActionEvent event) -> produceAnswer("+"));
+        btnD.setOnAction((ActionEvent event) -> produceAnswer("/"));
+        btnV.setOnAction((ActionEvent event) -> produceAnswer("*"));
 
         return pane;
     }
 
-    public int getNumber1(TextField field) {return Integer.parseInt(field.getText());}
-    public int getNumber2(TextField field) {return Integer.parseInt(field.getText());}
+    public void produceAnswer(String operation){
+        double number1 = getNumberTextfield(field1);
+        double number2 = getNumberTextfield(field2);
+        Calculator calc = null;
+
+        if(operation.equals("+"))calc = new Calculator(number1, number2);
+        else if(operation.equals("/"))calc = new DeelBerekening(number1, number2);
+        else if(operation.equals("*"))calc = new MaalBerekening(number1, number2);
+
+        String answer = String.format("%.2f", calc.bereken());
+        displayAns.setText(answer);
+    }
+
+    public void setButtonSize(Button btn) {btn.setMaxWidth(Double.MAX_VALUE);}
+    public int getNumberTextfield(TextField field){return Integer.parseInt(field.getText());}
+
+    public ColumnConstraints createColumnConstraints()
+    {
+        ColumnConstraints col = new ColumnConstraints();
+        col.setPercentWidth(33.33);
+        return col;
+    }
+
+    public static void main(String[] args) {launch(args);}
+}
 
 
-    public static void main(String[] args) {
-        launch(args);
+interface Berekening
+{
+    double bereken();
+}
+
+class Calculator implements Berekening
+{
+    private Double number1;
+    private Double number2;
+
+    public Calculator(Double number1, Double number2){this.number1 = number1;this.number2 = number2;}
+    public Double getNumber1(){return this.number1;}
+    public Double getNumber2(){return this.number2;}
+
+    @Override
+    public double bereken() { //standaard wordt er in Calculater een optelling gemaakt in de method 'bereken()'
+        return number1 + number2;
+    }
+}
+class MaalBerekening extends Calculator
+{
+    public MaalBerekening(Double number1, Double number2) {super(number1, number2);}
+
+    @Override
+    public double bereken() {
+        return super.getNumber1() * super.getNumber2();
+    }
+}
+class DeelBerekening extends Calculator
+{
+    public DeelBerekening(Double number1, Double number2) {super(number1, number2);}
+
+    @Override
+    public double bereken() {
+        return super.getNumber1() / super.getNumber2();
     }
 }
 
